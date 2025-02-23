@@ -45,19 +45,3 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 - Added the disconnect feature
 - Made the plugin much more user friendly
-
-### Issues
-
-If you have any issues or suggestions please create an **issue** or a **pull request**.
-
-### Compatibility
-
-This plugin currently requires Obsidian v0.9.10+
-
-### Install
-
-You can install the plugin via the Community Plugins tab within Obsidian.
-
-#### Manually installing the plugin
-
-- Copy over `main.js`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
