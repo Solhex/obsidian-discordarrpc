@@ -105,6 +105,10 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.rpc.destroy();
   }
 
+  async parse() {
+    console.log("placeholder");
+  }
+
   async connectDiscord(): Promise<void> {
     this.loadedTime = new Date();
     this.lastSetTime = new Date();
