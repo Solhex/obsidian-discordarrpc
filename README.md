@@ -1,3 +1,24 @@
+# Custom RPC
+
+## My Fork
+
+I noticed the original plugin wasnt being maintained! So i decided to create my own fork that I'll try to update!
+
+### Installing
+
+I'm not sure how BRAT works so for now you'll have to do it manually.
+
+- Go to the install folder
+- Download main.js and manifest.json
+- put em in a folder in your .obsidian/plugins folder
+- You'll notice the plugin is under a different name
+- Just enable it.
+
+### TODO
+
+- Finish up Folder Names
+- Add a way to include custom strings in the status.
+
 ## Obsidian Discord Rich Presence Plugin
 
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lukeleppan/obsidian-discordrpc/Build%20Release?logo=github&style=for-the-badge) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/lukeleppan/obsidian-discordrpc?style=for-the-badge) ![GitHub All Releases](https://img.shields.io/github/downloads/lukeleppan/obsidian-discordrpc/total?style=for-the-badge)
