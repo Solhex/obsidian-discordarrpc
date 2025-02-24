@@ -11,3 +11,6 @@ dist/
 *.js.map
 test-vault/
 *.zip
+
+# misc
+backup/

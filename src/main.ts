@@ -1,4 +1,4 @@
-import { Client } from "discord-rpc";
+import { Client, Presence } from "discord-rpc";
 import { Plugin, PluginManifest, TFile } from "obsidian";
 import { Logger } from "./logger";
 import { DiscordRPCSettings, PluginState } from "./settings/settings";
@@ -23,13 +23,14 @@ export default class ObsidianDiscordRPC extends Plugin {
     return this.state;
   }
 
-  public getApp(): any {
-    return this.app;
-  }
+  // Remove unnecessary methods
+  // public getApp(): any {
+  //   return this.app;
+  // }
 
-  public getPluginManifest(): PluginManifest {
-    return this.manifest;
-  }
+  // public getPluginManifest(): PluginManifest {
+  //   return this.manifest;
+  // }
 
   async onload() {
     let statusBarEl = this.addStatusBarItem();
@@ -43,7 +44,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
     this.registerInterval(window.setInterval(async () => {
       if (this.settings.showConnectionTimer && this.getState() == PluginState.connected){
-        this.statusBar.displayTimer(this.settings.useLoadedTime ? this.loadedTime : this.lastSetTime);
+        this.statusBar.displayTimer(this.settings.useLoadedTime? this.loadedTime: this.lastSetTime);
       }
     }, 500));
 
@@ -72,14 +73,11 @@ export default class ObsidianDiscordRPC extends Plugin {
     if (this.settings.connectOnStart) {
       await this.connectDiscord();
 
-      let activeLeaf = this.app.workspace.activeLeaf;
-      let files: TFile[] = this.app.vault.getMarkdownFiles();
-
-      files.forEach((file) => {
-        if (file.basename === activeLeaf.getDisplayText()) {
-          this.onFileOpen(file);
-        }
-      });
+      // Optimize file finding
+      const activeFile = this.app.workspace.getActiveFile();
+      if (activeFile) {
+        this.onFileOpen(activeFile);
+      }
     } else {
       this.setState(PluginState.disconnected);
       this.statusBar.displayState(
@@ -163,95 +161,38 @@ export default class ObsidianDiscordRPC extends Plugin {
     folderName: string
   ): Promise<void> {
     if (this.getState() === PluginState.connected) {
-      let vault: string;
-      if (this.settings.customVaultName === "") {
-        vault = vaultName;
-      } else {
-        vault = this.settings.customVaultName;
-      }
-
-      let file: string;
-      if (this.settings.showFileExtension) {
-        file = fileName + "." + fileExtension;
-      } else {
-        file = fileName;
-      }
-
-      let date: Date;
-      if (this.settings.useLoadedTime) {
-        date = this.loadedTime;
-      } else {
-        date = new Date();
-      }
+      const vault = this.settings.customVaultName || vaultName;
+      const file = this.settings.showFileExtension
+      ? `${fileName}.${fileExtension}`
+      : fileName;
+      const date = this.settings.useLoadedTime? this.loadedTime: new Date();
       this.lastSetTime = date;
 
-      let folder_name: string;
-      if (this.settings.showFolderName) {
-        folder_name = ` (${folderName})`
-      } else {
-        folder_name = ``
-      }
+      const folder = this.settings.showFolderName? ` (${folderName})`: "";
+
+      // Simplify RPC activity setting
+      const activity: Presence = {
+        startTimestamp: date,
+        largeImageKey: "logo",
+        largeImageText: "Obsidian",
+      };
 
       if (this.settings.privacyMode) {
-        await this.rpc.setActivity({
-          details: `Editing Notes`,
-          state: `Working in a Vault`,
-          startTimestamp: date,
-          largeImageKey: "logo",
-          largeImageText: "Obsidian",
-        });
-      } else if (
-        this.settings.showVaultName &&
-        this.settings.showCurrentFileName
-      ) {
-        await this.rpc.setActivity({
-          details: `Editing ${file}`,
-          state: `Vault: ${vault}` + folder_name,
-          startTimestamp: date,
-          largeImageKey: "logo",
-          largeImageText: "Obsidian",
-        });
+        activity.details = "Editing Notes";
+        activity.state = "Working in a Vault";
+      } else if (this.settings.showVaultName && this.settings.showCurrentFileName) {
+        activity.details = `Editing ${file}`;
+        activity.state = `Vault: ${vault}${folder}`;
       } else if (this.settings.showVaultName) {
-        if (folder_name = "") {
-          await this.rpc.setActivity({
-            state: `Vault: ${vault}`,
-            startTimestamp: date,
-            largeImageKey: "logo",
-            largeImageText: "Obsidian",
-          });
-        } else {
-          await this.rpc.setActivity({
-            state: `Vault: ${vault}` + `${folder_name}`,
-            startTimestamp: date,
-            largeImageKey: "logo",
-            largeImageText: "Obsidian",
-          });
-        }
-
+        activity.state = `Vault: ${vault}${folder}`;
       } else if (this.settings.showCurrentFileName) {
-        if (folder_name = "") {
-          await this.rpc.setActivity({
-            details: `Editing ${file}`,
-            startTimestamp: date,
-            largeImageKey: "logo",
-            largeImageText: "Obsidian",
-          });
-        } else {
-          await this.rpc.setActivity({
-            details: `Editing ${file}`,
-            state: `In ${folder_name}`,
-            startTimestamp: date,
-            largeImageKey: "logo",
-            largeImageText: "Obsidian",
-          });
+        activity.details = `Editing ${file}`;
+        if (folder) {
+          activity.state = `In ${folder}`;
         }
-      } else {
-        await this.rpc.setActivity({
-          startTimestamp: date,
-          largeImageKey: "logo",
-          largeImageText: "Obsidian",
-        });
       }
+
+      await this.rpc.setActivity(activity as Presence);
     }
   }
 }
