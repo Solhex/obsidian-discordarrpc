@@ -1,12 +1,12 @@
 {
   "name": "obsidian-discordrpc",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "Update your Discord Status to show your friends what you are working on in Obsidian. With Discord Rich Presence.",
   "main": "main.js",
   "scripts": {
-    "dev": "rollup --config rollup.config.js -w",
-    "build": "rollup --config rollup.config.js",
-    "release": "standard-version"
+    "dev": "rollup --config rollup.config.js -w --bundleConfigAsCjs",
+    "build": "rollup --config rollup.config.js --bundleConfigAsCjs",
+    "release": "standard-version --bundleConfigAsCjs"
   },
   "keywords": [
     "obsidian",
