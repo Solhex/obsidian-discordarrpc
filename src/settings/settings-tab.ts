@@ -12,7 +12,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
     containerEl.empty();
     containerEl.createEl("h2", { text: "Discord Rich Presence Settings" });
 
-    containerEl.createEl("h3", { text: "Vault Name Settings" });
+    containerEl.createEl("h3", { text: "Privacy Settings" });
     new Setting(containerEl)
       .setName("Privacy Mode")
       .setDesc("Enable this to hide the name of the vault and Hide file names")
@@ -27,13 +27,39 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             this.logger.logIgnoreNoNotice("Privacy Mode Disabled");
           }
 
-          plugin.setActivity("", "", "");
+          plugin.setActivity("", "", "", "");
         })
       );
+
+    new Setting(containerEl)
+      .setName("Show Folder Name")
+      .setDesc(
+        "Enable this to show the name of the folder you are working with."
+      )
+      .addToggle((boolean) =>
+        boolean.setValue(plugin.settings.showFolderName).onChange((value) => {
+          plugin.settings.showFolderName = value;
+          plugin.saveData(plugin.settings);
+
+          if (boolean.getValue()) {
+            this.logger.logIgnoreNoNotice("Folder Name is now Visible");
+          } else {
+            this.logger.logIgnoreNoNotice("Folder Name is no longer Visible");
+          }
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
+          );
+        })
+      );
+
     new Setting(containerEl)
       .setName("Show Vault Name")
       .setDesc(
-        "Enable this to show the name of the vault you are working with."
+        "Enable this to show the name of the vault you are working with. Will be displayed where the vault name is displayed."
       )
       .addToggle((boolean) =>
         boolean.setValue(plugin.settings.showVaultName).onChange((value) => {
@@ -49,7 +75,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
         })
       );
@@ -67,12 +94,12 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
         })
       );
 
-    containerEl.createEl("h3", { text: "File Name Settings" });
     new Setting(containerEl)
       .setName("Show Current File Name")
       .setDesc("Enable this to show the name of the file you are working on.")
@@ -92,7 +119,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.setActivity(
               this.app.vault.getName(),
               plugin.currentFile.basename,
-              plugin.currentFile.extension
+              plugin.currentFile.extension,
+              plugin.currentFile.parent.name
             );
           })
       );
@@ -110,7 +138,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.setActivity(
               this.app.vault.getName(),
               plugin.currentFile.basename,
-              plugin.currentFile.extension
+              plugin.currentFile.extension,
+              plugin.currentFile.parent.name
             );
           })
       );
@@ -129,7 +158,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
         });
       });
@@ -150,7 +180,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.setActivity(
               this.app.vault.getName(),
               plugin.currentFile.basename,
-              plugin.currentFile.extension
+              plugin.currentFile.extension,
+              plugin.currentFile.parent.name
             );
           });
       });
@@ -168,7 +199,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
           // needed to make timer disappear, otherwise it will freeze
           plugin.statusBar.displayState(plugin.getState(), plugin.settings.autoHideStatusBar);
@@ -189,7 +221,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
         });
       });
@@ -212,7 +245,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           plugin.setActivity(
             this.app.vault.getName(),
             plugin.currentFile.basename,
-            plugin.currentFile.extension
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
           );
         })
       );

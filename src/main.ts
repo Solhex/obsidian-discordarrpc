@@ -95,7 +95,8 @@ export default class ObsidianDiscordRPC extends Plugin {
       await this.setActivity(
         this.app.vault.getName(),
         file.basename,
-        file.extension
+        file.extension,
+        file.parent.name
       );
     }
   }
@@ -131,9 +132,9 @@ export default class ObsidianDiscordRPC extends Plugin {
 
     try {
       await this.rpc.login({
-        clientId: "763813185022197831",
+        clientId: "1343184166354812979",
       });
-      await this.setActivity(this.app.vault.getName(), "...", "");
+      await this.setActivity(this.app.vault.getName(), "...", "", "");
     } catch (error) {
       this.setState(PluginState.disconnected);
       this.statusBar.displayState(
@@ -158,7 +159,8 @@ export default class ObsidianDiscordRPC extends Plugin {
   async setActivity(
     vaultName: string,
     fileName: string,
-    fileExtension: string
+    fileExtension: string,
+    folderName: string
   ): Promise<void> {
     if (this.getState() === PluginState.connected) {
       let vault: string;
@@ -183,6 +185,13 @@ export default class ObsidianDiscordRPC extends Plugin {
       }
       this.lastSetTime = date;
 
+      let folder_name: string;
+      if (this.settings.showFolderName) {
+        folder_name = ` (${folderName})`
+      } else {
+        folder_name = ``
+      }
+
       if (this.settings.privacyMode) {
         await this.rpc.setActivity({
           details: `Editing Notes`,
@@ -197,25 +206,45 @@ export default class ObsidianDiscordRPC extends Plugin {
       ) {
         await this.rpc.setActivity({
           details: `Editing ${file}`,
-          state: `Vault: ${vault}`,
+          state: `Vault: ${vault}` + folder_name,
           startTimestamp: date,
           largeImageKey: "logo",
           largeImageText: "Obsidian",
         });
       } else if (this.settings.showVaultName) {
-        await this.rpc.setActivity({
-          state: `Vault: ${vault}`,
-          startTimestamp: date,
-          largeImageKey: "logo",
-          largeImageText: "Obsidian",
-        });
+        if (folder_name = "") {
+          await this.rpc.setActivity({
+            state: `Vault: ${vault}`,
+            startTimestamp: date,
+            largeImageKey: "logo",
+            largeImageText: "Obsidian",
+          });
+        } else {
+          await this.rpc.setActivity({
+            state: `Vault: ${vault}` + `${folder_name}`,
+            startTimestamp: date,
+            largeImageKey: "logo",
+            largeImageText: "Obsidian",
+          });
+        }
+
       } else if (this.settings.showCurrentFileName) {
-        await this.rpc.setActivity({
-          details: `Editing ${file}`,
-          startTimestamp: date,
-          largeImageKey: "logo",
-          largeImageText: "Obsidian",
-        });
+        if (folder_name = "") {
+          await this.rpc.setActivity({
+            details: `Editing ${file}`,
+            startTimestamp: date,
+            largeImageKey: "logo",
+            largeImageText: "Obsidian",
+          });
+        } else {
+          await this.rpc.setActivity({
+            details: `Editing ${file}`,
+            state: `In ${folder_name}`,
+            startTimestamp: date,
+            largeImageKey: "logo",
+            largeImageText: "Obsidian",
+          });
+        }
       } else {
         await this.rpc.setActivity({
           startTimestamp: date,

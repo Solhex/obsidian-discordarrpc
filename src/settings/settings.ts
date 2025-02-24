@@ -1,5 +1,6 @@
 export class DiscordRPCSettings {
   showVaultName: boolean = true;
+  showFolderName: boolean = true;
   showCurrentFileName: boolean = true;
   showConnectionTimer: boolean = false;
   showPopups: boolean = true;
