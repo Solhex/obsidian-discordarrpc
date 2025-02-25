@@ -10,6 +10,8 @@ export class DiscordRPCSettings {
   connectOnStart: boolean = true;
   autoHideStatusBar: boolean = true;
   privacyMode: boolean = false;
+  useCustomString: boolean = false;
+  customString: string = "";
 }
 
 export enum PluginState {

@@ -144,16 +144,22 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           })
       );
 
-    containerEl.createEl("h3", { text: "Time Settings" });
+    containerEl.createEl("h3", { text: "Custom Settings" });
     new Setting(containerEl)
-      .setName("Use Obsidian Total Time")
+      .setName("Use Custom a custom message")
       .setDesc(
-        "Enable to use the total time you have been using Obsidian, instead of the time spent editing a single file."
+        "Enable this to use a custom message instead of the default."
       )
-      .addToggle((boolean) => {
-        boolean.setValue(plugin.settings.useLoadedTime).onChange((value) => {
-          plugin.settings.useLoadedTime = value;
+      .addToggle((boolean) =>
+        boolean.setValue(plugin.settings.useCustomString).onChange((value) => {
+          plugin.settings.showFolderName = value;
           plugin.saveData(plugin.settings);
+
+          if (boolean.getValue()) {
+            this.logger.logIgnoreNoNotice("Using Custom String...");
+          } else {
+            this.logger.logIgnoreNoNotice("Not Using Custom String...");
+          }
 
           plugin.setActivity(
             this.app.vault.getName(),
@@ -161,22 +167,20 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.currentFile.extension,
             plugin.currentFile.parent.name
           );
-        });
-      });
+        })
+      );
 
-    containerEl.createEl("h3", { text: "Status Bar Settings" });
-    new Setting(containerEl)
-      .setName("Automatically hide Status Bar")
-      .setDesc(
-        "Automatically hide status bar after successfully connecting to Discord."
-      )
-      .addToggle((boolean) => {
-        boolean
-          .setValue(plugin.settings.autoHideStatusBar)
-          .onChange((value) => {
-            plugin.settings.autoHideStatusBar = value;
+      containerEl.createEl("h3", { text: "Time Settings" });
+      new Setting(containerEl)
+        .setName("Use Obsidian Total Time")
+        .setDesc(
+          "Enable to use the total time you have been using Obsidian, instead of the time spent editing a single file."
+        )
+        .addToggle((boolean) => {
+          boolean.setValue(plugin.settings.useLoadedTime).onChange((value) => {
+            plugin.settings.useLoadedTime = value;
             plugin.saveData(plugin.settings);
-
+  
             plugin.setActivity(
               this.app.vault.getName(),
               plugin.currentFile.basename,
@@ -184,16 +188,59 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
               plugin.currentFile.parent.name
             );
           });
-      });
-    
+        });
+  
+      containerEl.createEl("h3", { text: "Status Bar Settings" });
       new Setting(containerEl)
-      .setName("Show Connected Time")
+        .setName("Automatically hide Status Bar")
+        .setDesc(
+          "Automatically hide status bar after successfully connecting to Discord."
+        )
+        .addToggle((boolean) => {
+          boolean
+            .setValue(plugin.settings.autoHideStatusBar)
+            .onChange((value) => {
+              plugin.settings.autoHideStatusBar = value;
+              plugin.saveData(plugin.settings);
+  
+              plugin.setActivity(
+                this.app.vault.getName(),
+                plugin.currentFile.basename,
+                plugin.currentFile.extension,
+                plugin.currentFile.parent.name
+              );
+            });
+        });
+      
+        new Setting(containerEl)
+        .setName("Show Connected Time")
+        .setDesc(
+          "Show time spent editing file or time connected to Discord in the status bar."
+        )
+        .addToggle((boolean) => {
+          boolean.setValue(plugin.settings.showConnectionTimer).onChange((value) => {
+            plugin.settings.showConnectionTimer = value;
+            plugin.saveData(plugin.settings);
+  
+            plugin.setActivity(
+              this.app.vault.getName(),
+              plugin.currentFile.basename,
+              plugin.currentFile.extension,
+              plugin.currentFile.parent.name
+            );
+            // needed to make timer disappear, otherwise it will freeze
+            plugin.statusBar.displayState(plugin.getState(), plugin.settings.autoHideStatusBar);
+          });
+        });
+
+    new Setting(containerEl)
+      .setName("Set Custom Message")
       .setDesc(
-        "Show time spent editing file or time connected to Discord in the status bar."
+        "Change the message displayed on your rich presence."
       )
-      .addToggle((boolean) => {
-        boolean.setValue(plugin.settings.showConnectionTimer).onChange((value) => {
-          plugin.settings.showConnectionTimer = value;
+      .addText((text) =>
+        text.setValue(plugin.settings.customVaultName).onChange((value) => {
+          plugin.settings.customVaultName = value;
           plugin.saveData(plugin.settings);
 
           plugin.setActivity(
@@ -202,10 +249,8 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.currentFile.extension,
             plugin.currentFile.parent.name
           );
-          // needed to make timer disappear, otherwise it will freeze
-          plugin.statusBar.displayState(plugin.getState(), plugin.settings.autoHideStatusBar);
-        });
-      });
+        })
+      );
 
     containerEl.createEl("h3", { text: "Startup Settings" });
     new Setting(containerEl)

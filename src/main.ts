@@ -105,7 +105,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.rpc.destroy();
   }
 
-  async parse() {
+  async parse(showVault: boolean, showFile: boolean, showFolder: boolean) {
     console.log("placeholder");
   }
 
