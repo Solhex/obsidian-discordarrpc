@@ -11,7 +11,7 @@ export class DiscordRPCSettings {
   autoHideStatusBar: boolean = true;
   privacyMode: boolean = false;
   useCustomString: boolean = false;
-  customString: string = "";
+  customString: string = "Vault: %vault% %folder%";
 }
 
 export enum PluginState {
