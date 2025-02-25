@@ -105,9 +105,8 @@ export default class ObsidianDiscordRPC extends Plugin {
     this.rpc.destroy();
   }
 
-  async parse(inputString: string): Promise<string> {
+  async parse(inputString: string, vaultName: string): Promise<string> {
     // Some constants...
-    const vaultName = this.settings.customVaultName;
     const folderName = this.currentFile?.parent?.name || "";
     const fileName = this.currentFile?.name || "";
     const fileExtension = this.currentFile?.extension || "";
@@ -120,7 +119,7 @@ export default class ObsidianDiscordRPC extends Plugin {
     };
   
     // Use a regular expression to replace all placeholders in one go
-    const parsedString = inputString.replace(/[\w]+/g, (match) => {
+    const parsedString = inputString.replace(/%[\w]+%/g, (match) => {
       const placeholder = match.toLowerCase(); // Normalize to lowercase
       return placeholders[placeholder] || match; // Replace if found, otherwise keep original
     });
@@ -196,7 +195,7 @@ export default class ObsidianDiscordRPC extends Plugin {
 
       const folder = this.settings.showFolderName? ` (${folderName})`: "";
 
-      const parsedText = this.parse(this.settings.customString);
+      const parsedText = this.parse(this.settings.customString, vault);
 
       // Simplify RPC activity setting
       const activity: Presence = {
