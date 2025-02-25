@@ -31,74 +31,55 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
         })
       );
 
-    new Setting(containerEl)
-      .setName("Show Folder Name")
-      .setDesc(
-        "Enable this to show the name of the folder you are working with."
-      )
-      .addToggle((boolean) =>
-        boolean.setValue(plugin.settings.showFolderName).onChange((value) => {
-          plugin.settings.showFolderName = value;
-          plugin.saveData(plugin.settings);
+    // new Setting(containerEl)
+    //   .setName("Show Folder Name")
+    //   .setDesc(
+    //     "Enable this to show the name of the folder you are working with."
+    //   )
+    //   .addToggle((boolean) =>
+    //     boolean.setValue(plugin.settings.showFolderName).onChange((value) => {
+    //       plugin.settings.showFolderName = value;
+    //       plugin.saveData(plugin.settings);
 
-          if (boolean.getValue()) {
-            this.logger.logIgnoreNoNotice("Folder Name is now Visible");
-          } else {
-            this.logger.logIgnoreNoNotice("Folder Name is no longer Visible");
-          }
+    //       if (boolean.getValue()) {
+    //         this.logger.logIgnoreNoNotice("Folder Name is now Visible");
+    //       } else {
+    //         this.logger.logIgnoreNoNotice("Folder Name is no longer Visible");
+    //       }
 
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension,
-            plugin.currentFile.parent.name
-          );
-        })
-      );
+    //       plugin.setActivity(
+    //         this.app.vault.getName(),
+    //         plugin.currentFile.basename,
+    //         plugin.currentFile.extension,
+    //         plugin.currentFile.parent.name
+    //       );
+    //     })
+    //   );
 
-    new Setting(containerEl)
-      .setName("Show Vault Name")
-      .setDesc(
-        "Enable this to show the name of the vault you are working with. Will be displayed where the vault name is displayed."
-      )
-      .addToggle((boolean) =>
-        boolean.setValue(plugin.settings.showVaultName).onChange((value) => {
-          plugin.settings.showVaultName = value;
-          plugin.saveData(plugin.settings);
+    // new Setting(containerEl)
+    //   .setName("Show Vault Name")
+    //   .setDesc(
+    //     "Enable this to show the name of the vault you are working with. Will be displayed where the vault name is displayed."
+    //   )
+    //   .addToggle((boolean) =>
+    //     boolean.setValue(plugin.settings.showVaultName).onChange((value) => {
+    //       plugin.settings.showVaultName = value;
+    //       plugin.saveData(plugin.settings);
 
-          if (boolean.getValue()) {
-            this.logger.logIgnoreNoNotice("Vault Name is now Visible");
-          } else {
-            this.logger.logIgnoreNoNotice("Vault Name is no longer Visible");
-          }
+    //       if (boolean.getValue()) {
+    //         this.logger.logIgnoreNoNotice("Vault Name is now Visible");
+    //       } else {
+    //         this.logger.logIgnoreNoNotice("Vault Name is no longer Visible");
+    //       }
 
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension,
-            plugin.currentFile.parent.name
-          );
-        })
-      );
-
-    new Setting(containerEl)
-      .setName("Set Custom Vault Name")
-      .setDesc(
-        "Change the vault name shown publicly. Leave blank to use your actual vault name."
-      )
-      .addText((text) =>
-        text.setValue(plugin.settings.customVaultName).onChange((value) => {
-          plugin.settings.customVaultName = value;
-          plugin.saveData(plugin.settings);
-
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension,
-            plugin.currentFile.parent.name
-          );
-        })
-      );
+    //       plugin.setActivity(
+    //         this.app.vault.getName(),
+    //         plugin.currentFile.basename,
+    //         plugin.currentFile.extension,
+    //         plugin.currentFile.parent.name
+    //       );
+    //     })
+    //   );
 
     new Setting(containerEl)
       .setName("Show Current File Name")
@@ -125,26 +106,45 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           })
       );
 
-    new Setting(containerEl)
-      .setName("Show File Extension")
-      .setDesc("Enable this to show file extension.")
-      .addToggle((boolean) =>
-        boolean
-          .setValue(plugin.settings.showFileExtension)
-          .onChange((value) => {
-            plugin.settings.showFileExtension = value;
-            plugin.saveData(plugin.settings);
+    // new Setting(containerEl)
+    //   .setName("Show File Extension")
+    //   .setDesc("Enable this to show file extension.")
+    //   .addToggle((boolean) =>
+    //     boolean
+    //       .setValue(plugin.settings.showFileExtension)
+    //       .onChange((value) => {
+    //         plugin.settings.showFileExtension = value;
+    //         plugin.saveData(plugin.settings);
 
-            plugin.setActivity(
-              this.app.vault.getName(),
-              plugin.currentFile.basename,
-              plugin.currentFile.extension,
-              plugin.currentFile.parent.name
-            );
-          })
+    //         plugin.setActivity(
+    //           this.app.vault.getName(),
+    //           plugin.currentFile.basename,
+    //           plugin.currentFile.extension,
+    //           plugin.currentFile.parent.name
+    //         );
+    //       })
+    //   );
+
+    containerEl.createEl("h3", { text: "Customization" });
+    new Setting(containerEl)
+      .setName("Set Custom Vault Name")
+      .setDesc(
+        "Change the vault name shown publicly. Leave blank to use your actual vault name."
+      )
+      .addText((text) =>
+        text.setValue(plugin.settings.customVaultName).onChange((value) => {
+          plugin.settings.customVaultName = value;
+          plugin.saveData(plugin.settings);
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
+          );
+        })
       );
 
-    containerEl.createEl("h3", { text: "Custom Settings" });
     new Setting(containerEl)
       .setName("Use Custom a custom message")
       .setDesc(
