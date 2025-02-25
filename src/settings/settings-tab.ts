@@ -148,7 +148,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
     new Setting(containerEl)
       .setName("Use Custom a custom message")
       .setDesc(
-        "Enable this to use a custom message instead of the default."
+        "Enable this to use a custom message instead of the default. Placeholders: %vault% (Vault Name), %folder% (Folder Name), %file% (File Name), %extension% (File Extension)"
       )
       .addToggle((boolean) =>
         boolean.setValue(plugin.settings.useCustomString).onChange((value) => {
