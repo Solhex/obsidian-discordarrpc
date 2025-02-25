@@ -181,9 +181,17 @@ export default class ObsidianDiscordRPC extends Plugin {
         largeImageText: "Obsidian",
       };
 
+//      if (this.settings.useCustomString) {
+//        activity.details = "Test";
+//        activity.details = this.settings.customString;
+//      }
+
       if (this.settings.privacyMode) {
         activity.details = "Editing Notes";
         activity.state = "Working in a Vault";
+      } else if (this.settings.useCustomString) {
+        activity.details = "Test";
+        activity.details = this.settings.customString;
       } else if (this.settings.showVaultName && this.settings.showCurrentFileName) {
         activity.details = `Editing ${file}`;
         activity.state = `Vault: ${vault}${folder}`;

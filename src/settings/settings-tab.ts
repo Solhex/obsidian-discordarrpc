@@ -152,7 +152,7 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
       )
       .addToggle((boolean) =>
         boolean.setValue(plugin.settings.useCustomString).onChange((value) => {
-          plugin.settings.showFolderName = value;
+          plugin.settings.useCustomString = value;
           plugin.saveData(plugin.settings);
 
           if (boolean.getValue()) {
@@ -160,6 +160,25 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           } else {
             this.logger.logIgnoreNoNotice("Not Using Custom String...");
           }
+
+          plugin.setActivity(
+            this.app.vault.getName(),
+            plugin.currentFile.basename,
+            plugin.currentFile.extension,
+            plugin.currentFile.parent.name
+          );
+        })
+      );
+
+      new Setting(containerEl)
+      .setName("Set Custom Message")
+      .setDesc(
+        "Change the message displayed on your rich presence."
+      )
+      .addText((text) =>
+        text.setValue(plugin.settings.customString).onChange((value) => {
+          plugin.settings.customString = value;
+          plugin.saveData(plugin.settings);
 
           plugin.setActivity(
             this.app.vault.getName(),
@@ -232,25 +251,6 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
             plugin.statusBar.displayState(plugin.getState(), plugin.settings.autoHideStatusBar);
           });
         });
-
-    new Setting(containerEl)
-      .setName("Set Custom Message")
-      .setDesc(
-        "Change the message displayed on your rich presence."
-      )
-      .addText((text) =>
-        text.setValue(plugin.settings.customVaultName).onChange((value) => {
-          plugin.settings.customVaultName = value;
-          plugin.saveData(plugin.settings);
-
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension,
-            plugin.currentFile.parent.name
-          );
-        })
-      );
 
     containerEl.createEl("h3", { text: "Startup Settings" });
     new Setting(containerEl)
