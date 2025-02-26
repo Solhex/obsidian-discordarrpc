@@ -4,6 +4,8 @@
 
 I noticed the original plugin wasnt being maintained! So i decided to create my own fork that I'll try to update!
 
+If you find any issues or have any suggestions, please report them in the discussions post.
+
 ### Installing
 
 I'm not sure how BRAT works so for now you'll have to do it manually.
