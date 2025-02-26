@@ -106,24 +106,24 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
           })
       );
 
-    // new Setting(containerEl)
-    //   .setName("Show File Extension")
-    //   .setDesc("Enable this to show file extension.")
-    //   .addToggle((boolean) =>
-    //     boolean
-    //       .setValue(plugin.settings.showFileExtension)
-    //       .onChange((value) => {
-    //         plugin.settings.showFileExtension = value;
-    //         plugin.saveData(plugin.settings);
+    new Setting(containerEl)
+      .setName("Show File Extension")
+      .setDesc("Enable this to show file extension.")
+      .addToggle((boolean) =>
+        boolean
+          .setValue(plugin.settings.showFileExtension)
+          .onChange((value) => {
+            plugin.settings.showFileExtension = value;
+            plugin.saveData(plugin.settings);
 
-    //         plugin.setActivity(
-    //           this.app.vault.getName(),
-    //           plugin.currentFile.basename,
-    //           plugin.currentFile.extension,
-    //           plugin.currentFile.parent.name
-    //         );
-    //       })
-    //   );
+            plugin.setActivity(
+              this.app.vault.getName(),
+              plugin.currentFile.basename,
+              plugin.currentFile.extension,
+              plugin.currentFile.parent.name
+            );
+          })
+      );
 
     containerEl.createEl("h3", { text: "Customization" });
     new Setting(containerEl)
@@ -145,35 +145,35 @@ export class DiscordRPCSettingsTab extends PluginSettingTab {
         })
       );
 
-    new Setting(containerEl)
-      .setName("Use Custom a custom message")
-      .setDesc(
-        "Enable this to use a custom message instead of the default. Placeholders: %vault% (Vault Name), %folder% (Folder Name), %file% (File Name), %extension% (File Extension)"
-      )
-      .addToggle((boolean) =>
-        boolean.setValue(plugin.settings.useCustomString).onChange((value) => {
-          plugin.settings.useCustomString = value;
-          plugin.saveData(plugin.settings);
+    // new Setting(containerEl)
+    //   .setName("Use Custom a custom message")
+    //   .setDesc(
+    //     "Enable this to use a custom message instead of the default. Placeholders: %vault% (Vault Name), %folder% (Folder Name), %file% (File Name), %extension% (File Extension)"
+    //   )
+    //   .addToggle((boolean) =>
+    //     boolean.setValue(plugin.settings.useCustomString).onChange((value) => {
+    //       plugin.settings.useCustomString = value;
+    //       plugin.saveData(plugin.settings);
 
-          if (boolean.getValue()) {
-            this.logger.logIgnoreNoNotice("Using Custom String...");
-          } else {
-            this.logger.logIgnoreNoNotice("Not Using Custom String...");
-          }
+    //       if (boolean.getValue()) {
+    //         this.logger.logIgnoreNoNotice("Using Custom String...");
+    //       } else {
+    //         this.logger.logIgnoreNoNotice("Not Using Custom String...");
+    //       }
 
-          plugin.setActivity(
-            this.app.vault.getName(),
-            plugin.currentFile.basename,
-            plugin.currentFile.extension,
-            plugin.currentFile.parent.name
-          );
-        })
-      );
+    //       plugin.setActivity(
+    //         this.app.vault.getName(),
+    //         plugin.currentFile.basename,
+    //         plugin.currentFile.extension,
+    //         plugin.currentFile.parent.name
+    //       );
+    //     })
+    //   );
 
       new Setting(containerEl)
       .setName("Set Custom Message")
       .setDesc(
-        "Change the message displayed on your rich presence."
+        "Change the message displayed on your rich presence. Placeholders: %vault% (Vault Name), %folder% (Folder Name), %file% (File Name), %extension% (File Extension)"
       )
       .addText((text) =>
         text.setValue(plugin.settings.customString).onChange((value) => {

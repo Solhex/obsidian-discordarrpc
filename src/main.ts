@@ -193,9 +193,10 @@ export default class ObsidianDiscordRPC extends Plugin {
       const date = this.settings.useLoadedTime? this.loadedTime: new Date();
       this.lastSetTime = date;
 
-      const folder = this.settings.showFolderName? ` (${folderName})`: "";
-
       const parsedText = this.parse(this.settings.customString, vault);
+      const details = this.settings.showCurrentFileName
+      ? `Editing ${file}`
+      : "Editing Notes";
 
       // Simplify RPC activity setting
       const activity: Presence = {
@@ -213,7 +214,7 @@ export default class ObsidianDiscordRPC extends Plugin {
         activity.details = "Editing Notes";
         activity.state = "Working in a Vault";
       } else {
-        activity.details = `Editing ${file}`;
+        activity.details = details;
         activity.state = `${(await parsedText).toString()}`;
       }
 
