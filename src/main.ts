@@ -106,24 +106,31 @@ export default class ObsidianDiscordRPC extends Plugin {
   }
 
   async parse(inputString: string, vaultName: string): Promise<string> {
-    // Some constants...
-    const folderName = this.currentFile?.parent?.name || "";
-    const fileName = this.currentFile?.name || "";
-    const fileExtension = this.currentFile?.extension || "";
-    // Create a map of placeholders and their corresponding values
-    const placeholders: { [key: string]: string } = {
-      "%vault%": vaultName,
-      "%folder%": folderName,
-      "%file%": fileName,
-      "%extension%": fileExtension,
-    };
-  
-    // Use a regular expression to replace all placeholders in one go
-    const parsedString = inputString.replace(/%[\w]+%/g, (match) => {
-      const placeholder = match.toLowerCase(); // Normalize to lowercase
-      return placeholders[placeholder] || match; // Replace if found, otherwise keep original
-    });
-  
+
+    var parsedString = "";
+
+    if (inputString = "") {
+      parsedString = "Editing a File in a Vault";
+    } else{
+      // Some constants...
+      const folderName = this.currentFile?.parent?.name || "";
+      const fileName = this.currentFile?.name || "";
+      const fileExtension = this.currentFile?.extension || "";
+      // Create a map of placeholders and their corresponding values
+      const placeholders: { [key: string]: string } = {
+        "%vault%": vaultName,
+        "%folder%": folderName,
+        "%file%": fileName,
+        "%extension%": fileExtension,
+      };
+    
+      // Use a regular expression to replace all placeholders in one go
+      parsedString = inputString.replace(/%[\w]+%/g, (match) => {
+        const placeholder = match.toLowerCase(); // Normalize to lowercase
+        return placeholders[placeholder] || match; // Replace if found, otherwise keep original
+      });
+    }
+    
     return parsedString;
   }
 
