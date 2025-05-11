@@ -1,25 +1,8 @@
-# Custom RPC
+## Obsidian Discord Rich Presence Plugin (with arRPC support)
 
-## My Fork
+Want to show your friends what you're working on in Obsidian but you can only use arRPC? Well now you can with added arRPC support to obsidian-discordrpc!
 
-I noticed the original plugin wasnt being maintained! So i decided to create my own fork that I'll try to update!
-
-If you find any issues or have any suggestions, please report them in the discussions post.
-
-### Installing
-
-I'm not sure how BRAT works so for now you'll have to do it manually.
-
-- Go to the install folder
-- Download main.js and manifest.json
-- put em in a folder in your .obsidian/plugins folder
-- You'll notice the plugin is under a different name
-- Just enable it.
-
-### TODO
-
-- Finish up Folder Names
-- Add a way to include custom strings in the status.
+![Rich Presence Preview](https://raw.githubusercontent.com/Solhex/obsidian-discordarrpc/master/assets/presence.gif)
 
 ### Usage
 
@@ -33,21 +16,16 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 - Updates your Discord Status with Obsidian info, **Vault Name** and/or **Current File Name**.
 - Allows you to customise what info is shown.
+- Added arRPC support for opensource clients.
 
 ### Settings
 
-#### Privacy Settings
-
-##### Folder Name Settings
-
-- Toggle whether or not to show **Folder Name**
-
-##### Vault Name Settings
+#### Vault Name Settings
 
 - Toggle whether or not to show **Vault Name**
 - Set a custom **Vault Name** to show publicly
 
-##### File Name Settings
+#### File Name Settings
 
 - Toggle whether or not to show **Current File Name**
 - Toggle whether or not to show the current file **extension**
@@ -62,7 +40,16 @@ You can also reconnect to discord rich presence via the `Reconnect to Discord` c
 
 ### Contributors
 
-#### @leoccyao
+#### @lukeleppan, @leoccyao, and @BlankParticle
+- For the original Obsidian plugin
 
-- Added the disconnect feature
-- Made the plugin much more user friendly
+#### @Apoo711
+- For the fork of which this is forked off of
+
+### Issues
+
+If you have any issues or suggestions please create an **issue** or a **pull request**.
+
+#### Manually installing the plugin
+
+- Copy over `main.js`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
